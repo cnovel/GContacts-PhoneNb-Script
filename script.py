@@ -2,6 +2,7 @@
 # Work under CC BY 4.0 license #
 #      by Cyril NOVEL          #
 ################################
+import csv
 
 # Process the phone number
 def numberProcessing(stringNb):
@@ -96,3 +97,27 @@ def csvPhonesNb(arrayFirstLine):
     i += 1
 
   return csvPhonesNbIndex
+
+
+csvFile = open('google.csv', 'rb')
+reader = csv.reader(csvFile)
+writer = csv.writer(open('output.csv', 'wb'))
+i = 0
+csvPhonesNbIndex
+for row in reader:
+  if i == 0:
+    i = 1
+    csvPhonesNbIndex = csvPhonesNb(row)
+    writer.writerow(row)
+  else:
+    newRow = row
+    j = 0
+    while j < len(csvPhonesNbIndex):
+      index = csvPhonesNbIndex[j]
+      if row[index] != "" # we can process the string
+        newRow[index] = numberProcessing(row[index])
+      j += 1
+
+    writer.writerow(newRow)
+
+csvFile.close()
