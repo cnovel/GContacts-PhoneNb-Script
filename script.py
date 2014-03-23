@@ -9,11 +9,11 @@ def numberProcessing(stringNb):
   newNumber
   if stringNb[0] == "+":
     space = False
-    for(c in stringNb):
+    for c in stringNb:
       if c == " ":
         space = True
 
-    if !space:
+    if not space:
       if (stringNb[1] == 3 and stringNb[2] == 3):
         # french number
         newNumber = "+33 "
@@ -50,7 +50,7 @@ def numberProcessing(stringNb):
 
   else:
     space = False
-    for(c in stringNb):
+    for c in stringNb :
       if c == " ":
         space = True
 
@@ -100,10 +100,12 @@ def csvPhonesNb(arrayFirstLine):
 
 
 csvFile = open('google.csv', 'rb')
+
 reader = csv.reader(csvFile)
 writer = csv.writer(open('output.csv', 'wb'))
 i = 0
-csvPhonesNbIndex
+csvPhonesNbIndex = []
+
 for row in reader:
   if i == 0:
     i = 1
@@ -114,7 +116,7 @@ for row in reader:
     j = 0
     while j < len(csvPhonesNbIndex):
       index = csvPhonesNbIndex[j]
-      if row[index] != "" # we can process the string
+      if row[index] != "": # we can process the string
         newRow[index] = numberProcessing(row[index])
       j += 1
 
