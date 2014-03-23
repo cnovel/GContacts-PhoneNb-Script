@@ -1,4 +1,4 @@
-GContacts-PhoneNb-Script
+Formating script for GMail Contacts' phone numbers
 ========================
 
-This script format the phone numbers of your GMail Contacts, using the .csv file provided by Google.
+This script formats the phone numbers of your GMail Contacts, using the .csv file provided by Google.
