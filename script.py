@@ -87,3 +87,12 @@ def numberProcessing(stringNb):
       else:
         return stringNb
 
+def csvPhonesNb(arrayFirstLine):
+  csvPhonesNbIndex
+  i = 0
+  while i < len(arrayFirstLine):
+    if ("Phone" in arrayFirstLine[i] and "Value" in arrayFirstLine[i]):
+      csvPhonesNbIndex.append(i)
+    i += 1
+
+  return csvPhonesNbIndex
