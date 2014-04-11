@@ -46,12 +46,12 @@ class UnicodeWriter:
 # Process the phone number
 def numberProcessing(stringNb):
   stringFrmtd = stringNb.replace(" ", "")
-  frenchNumber = false
-  ukNumber = false
+  frenchNumber = False
+  ukNumber = False
   # there is no space to worry about in the new string
-  if stringFrmtd[0] == "+"
+  if stringFrmtd[0] == "+":
     #international number here
-    if stringFrmtd[1] == 3:
+    if stringFrmtd[1] == "3":
       # obviously its +33 something so French number !
       frenchNumber = True
     else:
@@ -60,7 +60,7 @@ def numberProcessing(stringNb):
   elif stringFrmtd[0] == "0" and stringFrmtd[1] == "0":
     #international number here again
     stringFrmtd = "+" + stringFrmtd[2:] # we remove the 00
-    if stringFrmtd[1] == 3:
+    if stringFrmtd[1] == "3":
       # obviously its +33 something so French number !
       frenchNumber = True
     else:
@@ -97,7 +97,41 @@ def csvPhonesNb(arrayFirstLine):
 
   return csvPhonesNbIndex
 
+def testProcessing():
+  number1 = "06 32 30 45 67"
+  number2 = "0745322134"
+  number3 = "+33 6 54 78 43 26"
+  number4 = "+33654784326"
+  number5 = "00 33 6 45 36 78 54"
 
+  number6 = "07456093456"
+  number7 = "074 560 934 56"
+  number8 = "00 44 745609 3456"
+  number9 = "+447456093456"
+
+  nb1 = numberProcessing(number1)
+  nb2 = numberProcessing(number2)
+  nb3 = numberProcessing(number3)
+  nb4 = numberProcessing(number4)
+  nb5 = numberProcessing(number5)
+  nb6 = numberProcessing(number6)
+  nb7 = numberProcessing(number7)
+  nb8 = numberProcessing(number8)
+  nb9 = numberProcessing(number9)
+
+  print nb1
+  print nb2
+  print nb3
+  print nb4
+  print nb5
+  print nb6
+  print nb7
+  print nb8
+  print nb9
+
+testProcessing()
+
+"""
 csvFile = open('test.csv', 'rb')
 ouputFile = open('output.csv', 'wb')
 
@@ -124,3 +158,4 @@ for row in reader:
     writer.writerow(newRow)
 
 csvFile.close()
+"""
