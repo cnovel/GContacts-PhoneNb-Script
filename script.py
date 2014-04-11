@@ -43,6 +43,26 @@ class UnicodeWriter:
             self.writerow(row)
 
 
+# If two numbers have the same label,  Google stores them
+# in the same cell, with separator :::
+def separateAndProcess(stringNumbers):
+  noSpaceNumbers = stringNumbers.replace(" ", "")
+  numbers = noSpaceNumbers.split(":::")
+  stringToReturn = ""
+  i = 0
+  while i < len(numbers):
+    processedNb = numberProcessing(numbers[i])
+    if (i == len(numbers) -1):
+      stringToReturn += processedNb
+    else:
+      stringToReturn += processedNb + " ::: "
+    
+    i += 1
+
+  return stringToReturn
+
+
+
 # Process the phone number
 def numberProcessing(stringNb):
   stringFrmtd = stringNb.replace(" ", "")
@@ -85,6 +105,7 @@ def numberProcessing(stringNb):
     return nb 
 
   else:
+    print stringNb + " wasn't recognised and so wasn't processed."
     return stringNb
 
 def csvPhonesNb(arrayFirstLine):
@@ -129,9 +150,6 @@ def testProcessing():
   print nb8
   print nb9
 
-testProcessing()
-
-"""
 csvFile = open('test.csv', 'rb')
 ouputFile = open('output.csv', 'wb')
 
@@ -141,10 +159,12 @@ writer = UnicodeWriter(ouputFile,quoting=csv.QUOTE_ALL)
 i = 0
 csvPhonesNbIndex = []
 
+print "Start the processing..."
 for row in reader:
   if i == 0:
     i = 1
     csvPhonesNbIndex = csvPhonesNb(row)
+    #print csvPhonesNbIndex
     writer.writerow(row)
   else:
     newRow = row
@@ -152,10 +172,11 @@ for row in reader:
     while j < len(csvPhonesNbIndex):
       index = csvPhonesNbIndex[j]
       if row[index] != "": # we can process the string
-        newRow[index] = numberProcessing(row[index])
+        newRow[index] = separateAndProcess(row[index])
       j += 1
 
     writer.writerow(newRow)
 
+print "All done!"
+
 csvFile.close()
-"""
