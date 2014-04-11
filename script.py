@@ -45,86 +45,47 @@ class UnicodeWriter:
 
 # Process the phone number
 def numberProcessing(stringNb):
-  if stringNb[0] == "+":
-    space = False
-    for c in stringNb:
-      if c == " ":
-        space = True
-
-    if not space:
-      if (stringNb[1] == 3 and stringNb[2] == 3):
-        # french number
-        newNumber = "+33 "
-        newNumber += stringNb[3]
-        i = 4
-        while i < len(stringNb):
-          if i%2 == 0:
-            newNumber += " " + stringNb[i]
-          else:
-            newNumber += stringNb[i]
-          i += 1
-
-        return newNumber
-
-      elif (stringNb[1] == 4 and stringNb[2] == 4):
-        # UK number
-        newNumber = "+44 "
-        newNumber += stringNb[3]
-        i = 4
-        while i < len(stringNb):
-          if i%7 == 0:
-            newNumber += " " + stringNb[i]
-          else:
-            newNumber += stringNb[i]
-          i += 1
-
-        return newNumber
-
-      else:
-        return stringNb
-
+  stringFrmtd = stringNb.replace(" ", "")
+  frenchNumber = false
+  ukNumber = false
+  # there is no space to worry about in the new string
+  if stringFrmtd[0] == "+"
+    #international number here
+    if stringFrmtd[1] == 3:
+      # obviously its +33 something so French number !
+      frenchNumber = True
     else:
-      return stringNb
+      ukNumber = True
+
+  elif stringFrmtd[0] == "0" and stringFrmtd[1] == "0":
+    #international number here again
+    stringFrmtd = "+" + stringFrmtd[2:] # we remove the 00
+    if stringFrmtd[1] == 3:
+      # obviously its +33 something so French number !
+      frenchNumber = True
+    else:
+      ukNumber = True
+
+  elif len(stringFrmtd) == 10:
+    # 10 numbers, guess it's french
+    frenchNumber = True
+    stringFrmtd = "+33" + stringFrmtd[1:] # we remove the 0
+
+  elif len(stringFrmtd) == 11:
+    # 11 numbers, guess it's uk
+    ukNumber = True
+    stringFrmtd = "+44" + stringFrmtd[1:] # we remove the 0
+
+  if frenchNumber:
+    nb = stringFrmtd[0] + stringFrmtd[1] + stringFrmtd[2] + " " + stringFrmtd[3] + " " + stringFrmtd[4] + stringFrmtd[5]  + " " + stringFrmtd[6] + stringFrmtd[7]  + " " + stringFrmtd[8] + stringFrmtd[9] + " " + stringFrmtd[10] + stringFrmtd[11]
+    return nb
+
+  elif ukNumber:
+    nb = stringFrmtd[0] + stringFrmtd[1] + stringFrmtd[2] + " " + stringFrmtd[3] + stringFrmtd[4] + stringFrmtd[5] + stringFrmtd[6] + " " + stringFrmtd[7]  + stringFrmtd[8] + stringFrmtd[9] + stringFrmtd[10] + stringFrmtd[11] + stringFrmtd[12]
+    return nb 
 
   else:
-    space = False
-    for c in stringNb :
-      if c == " ":
-        space = True
-
-    if space:
-      return stringNb
-    else:
-      if len(stringNb) == 10:
-        # french number
-        newNumber = "+33 "
-        newNumber += stringNb[1]
-        i = 2
-        while i < len(stringNb):
-          if i%2 == 0:
-            newNumber += " " + stringNb[i]
-          else:
-            newNumber += stringNb[i]
-          i += 1
-
-        return newNumber
-
-      elif len(stringNb) == 11:
-        # UK number
-        newNumber = "+44 "
-        newNumber += stringNb[1]
-        i = 2
-        while i < len(stringNb):
-          if i%5 == 0:
-            newNumber += " " + stringNb[i]
-          else:
-            newNumber += stringNb[i]
-          i += 1
-
-        return newNumber
-
-      else:
-        return stringNb
+    return stringNb
 
 def csvPhonesNb(arrayFirstLine):
   csvPhonesNbIndex
@@ -137,7 +98,7 @@ def csvPhonesNb(arrayFirstLine):
   return csvPhonesNbIndex
 
 
-csvFile = open('google.csv', 'rb')
+csvFile = open('test.csv', 'rb')
 ouputFile = open('output.csv', 'wb')
 
 reader = UnicodeReader(csvFile)
