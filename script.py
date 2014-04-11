@@ -2,9 +2,11 @@
 # Work under CC BY 4.0 license #
 #      by Cyril NOVEL          #
 ################################
+
 import csv
 import codecs
 import cStringIO
+import sys
 
 class UTF8Recoder:
     def __init__(self, f, encoding):
@@ -150,33 +152,43 @@ def testProcessing():
   print nb8
   print nb9
 
-csvFile = open('test.csv', 'rb')
-ouputFile = open('output.csv', 'wb')
 
-reader = UnicodeReader(csvFile)
-writer = UnicodeWriter(ouputFile,quoting=csv.QUOTE_ALL)
+if len(sys.argv) != 3:
+  sys.exit("Too few or too many arguments!")
 
-i = 0
-csvPhonesNbIndex = []
+try:
+  csvFile = open(sys.argv[1], 'rb')
+except IOError:
+    print "Could not open file!"
+    sys.exit("Exiting script.")
 
-print "Start the processing..."
-for row in reader:
-  if i == 0:
-    i = 1
-    csvPhonesNbIndex = csvPhonesNb(row)
-    #print csvPhonesNbIndex
-    writer.writerow(row)
-  else:
-    newRow = row
-    j = 0
-    while j < len(csvPhonesNbIndex):
-      index = csvPhonesNbIndex[j]
-      if row[index] != "": # we can process the string
-        newRow[index] = separateAndProcess(row[index])
-      j += 1
+with csvFile:
+  ouputFile = open(sys.argv[2], 'wb')
 
-    writer.writerow(newRow)
+  reader = UnicodeReader(csvFile)
+  writer = UnicodeWriter(ouputFile,quoting=csv.QUOTE_ALL)
 
-print "All done!"
+  i = 0
+  csvPhonesNbIndex = []
 
-csvFile.close()
+  print "Start the processing..."
+  for row in reader:
+    if i == 0:
+      i = 1
+      csvPhonesNbIndex = csvPhonesNb(row)
+      #print csvPhonesNbIndex
+      writer.writerow(row)
+    else:
+      newRow = row
+      j = 0
+      while j < len(csvPhonesNbIndex):
+        index = csvPhonesNbIndex[j]
+        if row[index] != "": # we can process the string
+          newRow[index] = separateAndProcess(row[index])
+        j += 1
+
+      writer.writerow(newRow)
+
+  print "All done!"
+
+  csvFile.close()
